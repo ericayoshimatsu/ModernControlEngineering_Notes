@@ -1,0 +1,621 @@
+
+
+======================================================================================
+
+	C H A P T E R   6  - Control System Analysis and design by the root locus method
+
+======================================================================================
+
+
+===  6-2 Root-Locus Plots  ====
+
+C(s)       G(s)
+----  =  ----------- 
+R(s)     1+G(s)H(s) 
+
+
+Characteristic equation: 
+	
+	1+G(s)H(s) = 0  
+	=> G(s)H(s) = -1
+	
+	phase(G(s)H(s)) = +- 180°(2k+1)   k = 0,1,2,3...
+						(-180°, 180°, 540°,...)
+						
+					soma contribuição de cada zero e subtrai contribuição de zero
+					do poli/o/zero até o ponto de estudo s
+						
+	|G(s)H(s)| = 1
+	
+Values of s that fulfill phase and magnitude equations are roots of characteristic equation 
+	-> closed loop poles
+					
+
+General Rules for Constructing Root Loci
+
+	Find characteristic equation
+	
+		1 + G(s)H(s) = 0
+		
+			K (s+z1)(s+z2)...(s+z3)
+		1 + ------------------------ = 0
+			(s+p1)(s+p2)....(s+p3)		
+			
+	Assume K>=0		
+			
+	1. Find poles and zeros
+			Rlocus start at poles and terminate at zero or inifinity
+		
+	2. Determine root loci on the real axis
+		If the total number of real poles and real zeros to the right of this test point is odd,
+		then this point lies on a root locus
+		
+	3. Determine asymptotes (s >> 1)
+	
+							   +-180° (2k-1) 
+		angle of asymptotes = ----------------- 	(k = 0,1,2...)
+								  n - m
+								  
+			n: number of poles G(s)H(s)
+			m: number of zeros G(s)H(s)
+			
+		
+		intersection point
+		
+				  (p1 + p2 +...+ pn) - (z1 + z2 +...+ zm)
+			s = - ---------------------------------------
+								   n - m
+	
+
+	4. Find breakaway and break-in points
+			either lie on the real axis or occur in complex-conjugate pairs (due to symmetry)
+			
+		
+		1 + K G'(s)H(s) = 0; 
+		K = -1 / (G'(s)H(s) = - B(s)/A(s)
+		
+		B(s) + K A(s) = 0
+		
+		 dK			B'(s)A(s) - B(s)A'(s)
+		---- = -  -----------------------  = 0
+		 ds				  A^2(s)
+		 
+		verify if 's' lies on the root locus.
+		
+		
+	5. Determine angle of departure/arrival of complex poles/zeros
+	
+		Angle at complex pole s1 = 180° - sum(angles of vectors to a complex pole s1 from other poles)
+				  			            +  sum(angles of vectors to a complex pole s1 from zeros)
+									
+		Angle at a complex zero z1 = 180° - sum(angles of vectors to a complex zero z1 from other zeros)
+										  + sum(angles of vectors to a complex zero z1 from poles)
+	
+
+	6. Find points where root loci may cross the imaginary axis
+	
+		(a) Routh's stability criterion
+	OR  (b) substitute s = jw on characteristic equation
+	
+	
+	7. Taking a series of test points, sketch the root loci
+	
+	
+	8. Determine closed loop poles
+	
+			 product(lenght point to s from poles)
+		K = ----------------------------------
+			 product(lenght point to s from zeros)
+
+
+			 
+===  6-3 Ploting Root-Locus with Matlab  ====
+
+
+command: rlocus
+		 axis('square')
+		 conv
+		 roots
+		 sgrid ([zeta],[wn])
+		 
+		 text(x,y,'string')
+		 gtext('string') + clique com o mouse
+		 
+		 [K,r] = rlocfind(num,den) + clique com o mouse
+		 
+
+Conditional stability 
+	dangerous but does occur in certain systems — in particular, a system that has an unstable feedforward path
+	may be eliminated through a good compensation design
+	
+	
+Constant-phase and constant-gain loci of G(s)H(s) are orthogonal
+
+
+===  6-4 Root locus plots for POSITIVE Feedback Systems  ====
+
+
+  C(s)       G(s)
+ ----- = --------------
+  R(s)    1 - G(s)H(s)
+
+ 
+characteristic equation: 
+	
+	1 - G(s)H(s) = 0
+
+	G(s)H(s) = 1
+	
+	phase(G(s)H(s)) = 0° + 360° k 	(k = 0,1,2,...)
+	
+	mag(G(s)H(s)) = 1  	-> same as negative feedback
+
+   	
+Modifications
+
+	2) Real poles and zeros to the right of the test point is even
+	
+	3)                        +- 360 k
+		Asymptote angles = -----------------
+								n - m
+								
+		n: number of poles of G(s)H(s)
+		m: number of zeros of G(s)H(s)
+		
+	5)	Angle at complex pole s1 = 0° - sum(angles of vectors to a complex pole s1 from other poles)
+				  			            +  sum(angles of vectors to a complex pole s1 from zeros)
+									
+		Angle at a complex zero z1 = 0° - sum(angles of vectors to a complex zero z1 from other zeros)
+										  + sum(angles of vectors to a complex zero z1 from poles)
+	
+	
+Table 6–2 Root-Locus Plots of Negative-Feedback and Positive-Feedback Systems
+	
+	
+	
+===  6-5 Root locus approach to control-systems design  ====
+	
+Reshape the root loci to meet the performance specifications.
+(In this book, we assume that the plant is given and unalterable)
+
+Used when time requirements are given (settling time, damping, rising time, max overshoot...)
+
+Design of a filter whose characteristics tend to compensate for the undesirable and unalterable characteristics of the plant.	
+
+Design by root-locus method:
+	
+	Add poles and zeros to force rlocus to pass through desired closed loop poles
+	
+	Assumption: Closed Loop has a pair of dominant poles.
+				Zeros and additional poles does not affect the response!
+	
+
+Series Compensation and Parallel/Feedback Compensation
+	Series compensation are simpler, but require more components (amplifiers -> from lower energy to high energy)
+
+
+The final result of root-locus or frequency-response is not unique, because the best or optimal solution may not be precisely
+defined if the time-domain specifications or frequency-domain specifications are given.	
+	
+	
+Effects of adding poles
+	pulling the root locus to the right, tending to lower the system’s relative stability and to slow down the settling of the response
+	
+	
+Effects of adding zeros
+	pulling the root locus to the left, tending to make the system more stable and to speed up the settling of the response
+
+	
+	
+	
+===  6-6 Lead Compensation  (series) ====
+
+
+Usado para: 
+* unstable system for all gains 
+* stable, but with undersirable transient response
+
+Gc = Kc a (Ts + 1)
+		  --------
+		  (aTs + 1)
+		  
+0 < a < 1
+
+			  ^ Im
+			  |
+			  |
+---x-----o----|---> Re
+			  |
+			  |		
+			  
+
+thumb rule: "a" as large as possible -> greater static error constant
+
+Closed loop zeros near the origin affect the response
+
+Fazer o rlocus passar no ponto desejado.
+
+1) determinar posição dos polos em malha fechada com resposta desejada
+
+2) Determinar ângulo deficiente "phi"
+
+3.1) Método para obter maior valor de "a" 
+	(-> maior ganho do caminho direto e maior constante de erro estático 
+	 -> menor erro estático )
+
+	A-------P
+		   / \
+		  /   \
+		 /     \
+		B	    O
+
+	Bissect APO -> AB
+	Econtre C e D tal que ang(CBP) = ang(BPD) = phi/2
+	Pontos C e D são as posições do polo e zero
+	
+3.2) Método 2
+	(-> mais simples)
+	
+	Escolher posição do zero próximo a um polo da planta
+	
+* Se um maior aumento de constante de erro estático for necessário, 
+  considerar implementar compensador lag-lead.
+  
+Lead compensation basically speeds up the response and increases the stability of the system.
+  
+  
+Procedure:
+	
+	1. Determine desired location for dominant close-loop poles 
+	
+	2. Draw root locus of uncompensated system. If root locus does not pass over the desired location, calculate angle deficiency "phi"
+		
+		
+		i.e. phase(G(s)H(s))|                       + phi = 180°(2k-1)
+							| s = desired location
+							
+		
+	3. Assume the lead compensator
+	
+					s + 1/T				Ts + 1
+		Gc(s) = Kc ------------ = Kc*a ---------	(0 < a < 1)
+					s + 1/aT			aTs + 1
+	
+		a, T -> determined from angle deficiency "phi" (phi > 0)
+		Kc 	 -> determined from rlocus gain
+	
+	4. Try to make 'a' as large as possible. (larger static error constant) 
+	
+	5. Determine Kc from magnitude condition
+	
+	6. Check if requirements are met. 
+		If larger static error constant is required, cascade a lag compensator or use lag-lead 
+		compensator 
+	
+	
+Method 1 (largest possible value of 'a' - smaller steady-state error for ramps):
+	
+
+	1. bissect APO (horizontal to P then line to origin)
+	2. from the bissector, add and subtract phi/2
+	3. pole and zero are the points where bissector +- phi/2 cross real axis
+	4. determine gain from magnitude condition |G(s)H(s)|| 						= 1
+														 | s = desired cl pole
+	
+	
+Method 2 (zero canceling pole - smaller overshot to step input):
+
+	1. place zero at the dominant real pole
+
+
+ 
+ ===  6-7 Lag Compensation  (series) ====
+ 
+ Gc = Kc b (Ts + 1)
+		  --------
+		  (bTs + 1)
+		  
+b > 1
+
+			^ Im
+			|
+			|
+--------o-x-+---> Re
+			|
+			|		
+			  
+
+Usado para:
+* steady-state characteristics unsatisfactory (even with satisfactory transient)
+(-> aumentar ganho em malha aberta sem mudar muito a posição dos polos dominantes)
+* constante de erro aumenta -> erro em regime diminui
+
+Para não afetar a posição dos polos dominantes (não afetar a resposta transiente),
+contribuição de fase do lag deve ser menor que 5°
+	
+	-5° < phi < 0°
+	
+-> colocar polo e zero do compensador próximo da origem
+	
+ganho da malha direta aumenta pelo fator de "b" > 1
+
+Side effects:
+
+A adição do compensador próximo da origem (polo e zero) cria em polo em malha fechada perto da origem
+-> aumenta tempo de assentamento	
+	
+1) Determinar rlocus do sistema não compensado e constante de erro
+
+2) Determinar quanto a constante de erro deve ser aumentada para atender especificação
+
+3) Desenhar rlocus do sistema compensado e determinar ganho. 
+	Verificar se polos dominantes continuam quase na mesma posição
+
+
+	
+Lag compensation improves the steady-state accuracy of the system, but reduces the speed of the response.
+ 
+Used when system has satisfactory transient-response characteristics but unsatisfactory steady-state
+characteristics
+
+Angle contribution angle of the lag compensator should be limited to a small amount, say less than 5°
+	-> pole and zero placed near the origin
+
+	
+					s + 1/T				Ts + 1
+		Gc(s) = Kc ------------ = Kc*b ---------	(b > 1)
+					s + 1/bT			bTs + 1
+	
+Velocity error constant
+
+	Kv_compensated = Kc_hat * b * Kv_noncompesated
+	
+		Kc_hat = |Gc(s1)| approx 1
+		
+		
+		Kv = lim  s*G(s)
+		     s->0
+
+Contra: compensator zero that will be generated near the origin creates a closed-loop pole near the origin.This closedloop
+pole and compensator zero will generate a long tail of small amplitude in the step response, thus increasing the settling time.
+
+
+Procedure:
+
+	1. Draw root locus of G(s) (uncompensated open loop system0
+	
+	2. Assume 
+	
+					s + 1/T				Ts + 1
+		Gc(s) = Kc ------------ = Kc*b ---------	(b > 1)
+					s + 1/bT			bTs + 1
+					
+	3. Evaluate required static error constant
+	
+	4. Determine the amount of increase in the static error constant necessary to satisfy specifications
+	
+	5. Determine the pole and zero of the lag compensator that produce the necessary increase in the particular static error constant
+			
+		gain required in the specifications
+		----------------------------------- = b
+		 gain in the uncompensated system 
+			
+	6. Draw a new root-locus plot for the compensated system. 
+		Locate the desired dominant closed-loop poles on the root locus. 
+		
+	7. Adjust gain of the compensator from the magnitude condition so that the dominant
+		closed-loop poles lie at the desired location. 
+		Lag compensator gain will be approximately 1
+
+If overshoot is too large or settling time too long, then use lag-lead compensator
+
+
+
+ ===  6-8 Lag-Lead Compensation  (series) ====
+ 
+ 
+ 
+Design lag and lead together, instead of separated 
+Increase the system order by 2, unless there is a pole-zero cancelation
+ 
+	Lag:
+ 					s + 1/T				Ts + 1
+		Gc(s) = Kc ------------ = Kc*b ---------	(b > 1)
+					s + 1/bT			bTs + 1
+					
+	Lead:			
+ 					s + 1/T				Ts + 1
+		Gc(s) = Kc ------------ = Kc*a ---------	(0 < a < 1)
+					s + 1/aT			aTs + 1
+
+	Lag-Lead:
+	
+					    ( s + 1/T1 )( s + 1/T2 )
+		Gc(s) = Kc --------------------------------- 	(b > 1 and gamma > 1)
+					( s + gamma/T1 )( s + 1/bT2 )
+					
+							   
+					  b		   ( T1s + 1 )( T2s + 1 )
+		      = Kc ------- * --------------------------
+					gamma     ( T1 s + 1 )( bT2s + 1 )
+		                       -----
+							   gamma
+							   
+							   
+Case 1. gamma not equal to b
+
+	1. Determine desired location of dominant closed loop poles from performance specs
+	
+	2. Determine angle of deficiency 'phi' from uncompensated open loop G(s).
+		The lead part must contribute with this angle
+		
+		phi = 180° - phase( G(s1) )
+		
+	3. 	Design Lead
+	
+		Assume T2 large enough, so that the lag portion magnitude is approximately 1
+		Choose T1 and gamma, so that
+		
+		         s1 + 1/T1
+		phase( ------------- ) = phi
+			   s1 + gamma/T1
+			   
+			   
+		* the choice of gamma and T1 are not unique
+		
+		then Kc, so that
+		
+		
+		|         s1 + 1/T1			  |
+		| Kc *  ------------- * G(s1) | = 1				   
+		|       s1 + gamma/T1		  |
+		
+		
+	4. 	Design Lag
+		
+		Find b that satisfies the required static error constant Kv
+
+			Kv = lim  s * Gc(s) * G(s)
+		         s->0
+				 
+			   = lim  s * Kc  b  * G(s)
+		         s->0       -----
+		                    gamma
+							
+							
+							
+							
+		With b, determine T2, so that
+
+
+			| s1 + 1/T2  |
+			|----------	| = 1		
+			| s1 + 1/bT2 |			
+
+			
+			and
+			
+						 s1 + 1/T2  
+			-5° < phase(----------) < 0°		
+					     s1 + 1/bT2 			
+
+						 
+						 
+						 
+Case 2. gamma == b
+
+	1. Determine desired location of dominant closed loop poles from performance specs
+
+	2. Lag-lead compensator
+	
+	
+					( s + 1/T1 )( s + 1/T2 )
+		Gc(s) = Kc --------------------------- 		(b > 1)
+					( s + b/T1 )( s + 1/bT2 )
+					
+							   
+					  ( T1s + 1 )( T2s + 1 )
+		      = Kc * --------------------------
+					 ( T1 s + 1 )( bT2s + 1 )
+		               ---
+					    b
+
+		If Kv is determined
+		
+			Kv = lim  s * Gc(s) * G(s)
+			     s->0
+
+			   = lim  s * Kc * G(s)
+                 s->0
+				 
+				 
+	3. Determine angle of deficiency 'phi' from uncompensated open loop G(s).
+		The lead part must contribute with this angle
+
+		phi = 180° - phase( G(s1) )
+	
+	
+	4. Assume T2 large enough, so that the lag portion magnitude is approximately 1
+		Choose T1 and b, so that
+		
+		         s1 + 1/T1
+		phase( ------------- ) = phi
+			     s1 + b/T1
+			   
+			   
+		* the choice of b and T1 are not unique
+		
+		then Kc, so that
+		
+		
+		|         s1 + 1/T1			  |
+		| Kc *  ------------- * G(s1) | = 1				   
+		|         s1 + b/T1		      |
+		
+	5. With b, determine T2, so that
+
+
+			| s + 1/T2  |
+			|----------	| = 1		
+			| s + 1/bT2 |			
+
+			
+			and
+			
+						 s + 1/T2  
+			-5° < phase(----------) < 0°		
+					     s + 1/bT2 			
+		
+		
+		
+		
+===    6–9 PARALLEL COMPENSATION    ===
+
+
+series:
+	
+	C(s)	 Gc * G
+	---- = -----------
+	R(s)   1 + Gc*G*H
+
+parallel
+
+	C(s)	      G1 * G2
+	---- = --------------------
+	R(s)   1 + G2*Gc + G1*G2*H
+	
+	
+characteristic equation
+
+	1 + G2*Gc + G1*G2*H = 0
+	
+			   G2*Gc
+	=> 1 + ------------- = 0
+           1 + G1*G2*H
+		   
+									G2
+	=> 1 + Gf * Gc = 0;  Gf = --------------
+								1 + G1*G2*H
+
+
+
+
+Then use the modified characterist equation and the root locus method.
+
+
++++++++++++++++++ 
+Bookmark: pg. 353
++++++++++++++++++
+
+
+269 - 397
+
+269  282  295  308  321  334  347  360  373  386  399
+00---10---20---30---40---50---60---70---80---90---100
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+Exs 
+1-7,9 RootLocus 	1,2,3,4 ok
+8,10 Matlab
+11-20 compensator

@@ -1,0 +1,459 @@
+====================================================================
+
+	Modern Control Enginnering - 5th ed. Ogata
+	
+=====================================================================
+
+#############################
+
+ 	C H A P T E R   5 
+	
+#############################
+
+===  5-1 Introduction ===
+Test Signals: Step, Ramp, Acceleration, Impulse, sinusoidal, white noise
+
+Step: Sudden disturbances
+Ramp: input gradually changing with time
+Impulse: Shock inputs
+
+Response = transient + steady-state
+
+Absolute Stability: system comes back to equilibrium
+Relative Stability: csi, wn
+Steady-State Error
+
+
+===  5-2 First Order Systems ===
+
+Transfer Function: C(s)/R(s) = 1 / (Ts + 1) 
+
+Step Response: 	c(t) = 1 - e^(-t/T)     t>=0
+				c(T) = 1 - e^(-1) = 0.632
+				
+				dc|       1
+				--|    = --- 	slope da responsta em t=0 dá o inverso de T1
+				dt|t=0    T
+				
+				Slope(t=0) = 1/T
+				
+				para 2% de erro : t >= 4T
+
+				
+Unit Ramp Response: c(t) = t - T + T e^(-t/T)     t>=0
+					e(t) = T(1 - e^(-t/T))
+					e(inf) = T	erro estacionário igual a T
+					
+Unit Impulse Response: c(t) = 1/T e^(-t/T)      t>=0
+
+A resposta step é a derivada da resposta rampa no tempo*
+A resposta impulso é a derivada da resposte step no tempo*
+
+* Caso o sistema seja linear INVARIANTE com o tempo			
+
+
+
+===  5-3 Second Order Systems ===	
+
+Transfer Function: 	      K
+					---------------
+					Js^2 + Bs + K
+
+					
+Bhaskara no denominador: Delta = B^2 - 4JK
+						 Delta < 0; polos complex conjugates
+						 Delta >= 0; real poles
+		
+		
+ wn: natural damping
+ sigma = csi * wn : attenuation
+ csi: damping ratio
+
+
+Transfer Function: 	          wn^2
+					------------------------ 	-> Standard Form
+					s^2 + 2*csi*wn*s + wn^2					
+					
+Unit Step Response:
+
+	0 < csi < 1 : underdamped
+	
+		wd = wn*sqrt(1-csi^2)
+		
+		           e^(-csi*wn*t)                        sqrt(1-csi^2)  
+		c(t) = 1 - ------------- * sin( wd*t + tan^-1 * -------------- )
+				   sqrt(1-csi^2)                            csi	    
+				   
+				   
+				   	                                 csi    
+		c(t) = 1 - e^(-csi*wn*t) * ( cos(wd*t) + -------------- * sin(wd*t) )		
+					                             sqrt(1-csi^2)			   
+		
+					
+					                               csi    
+		e(t) = 	e^(-csi*wn*t) * ( cos(wd*t) + -------------- * sin(wd*t) )		
+					                           sqrt(1-csi^2)	  
+
+		If the linear system has any amount of damping, 
+		the undamped natural frequency cannot be observed experimentally
+		
+	csi = 0 : continuous oscillation
+		
+		c(t) = 1 - cos(wn*t)
+					
+	
+	csi = 1 : critically damped
+	
+		c(t) = 1 - e^(-wn*t)*(1 + wn*t)
+		
+	
+	csi > 1 : overdamped
+	
+	                       wn            s^(-s1*t)        s^(-s2*t)
+		c(t) = 1 + ------------------- ( ----------   -   ---------- )
+	               2 * sqrt(csi^2 - 1)       s1               s2
+				   
+				   
+			s1 = csi + sqrt(csi^2 - 1)
+			s2 = csi - sqrt(csi^2 - 1)
+	  					
+						
+		2 decay exponential terms. Consider the slowest one. 
+		
+		If s2 < s1: C(s)/R(s) = s2 / ( s + s2 )
+					
+					c(t) =  1 - e ^ -1*(csi - sqrt(csi^2 -1))*wn*t
+	
+	
+	Thumb Rule:
+		(excessive overshoot) 0.4 < csi < 0.8 (too sluggish)
+
+		
+Transient-Response Specifications (to step input)
+
+	OBS: valid only for standard second order system without zeros!
+
+	IC: equilibrium ( derivatives = 0 )
+
+	
+	1. Delay Time td : time to reach half of final value
+
+	
+	2. Rise time tr : time rise [10% - 90%] or [5% - 95%] or [0% - 100%]
+							pi - beta
+			tr[0% - 100%] = ---------
+							   wd
+							   
+						csi = cos(beta)
+						
+			For small tr, wd must be large (greater oscillation frequency)
+
+			
+	3. Peak Time tp : time to reach first peak of the overshoot
+	
+			tp = pi / wd
+
+			
+	4. Maximum Overshoot Mp : c(tp)-c(inf)
+			   			      ------------ * 100%
+							     c(inf)
+
+						Mp = e^(-pi*(sigma/wd)) 	* if final value is 1
+
+						
+	5. Settling Time, ts : time to reach and stay within a range of 2% or 5% of the final value
+
+			Envelope curves of transient response. 1 +- e^(-csi*wn*t)/sqrt(1-csi^2); T = 1/(csi*wn)
+			
+			ts [2%] = 4/(csi*wn)
+			ts [5%] = 3/(csi*wn)
+
+			válidos para csi <0.7
+			para csi > 0.7, resposta sluggish, ts aumenta
+			
+			
+			
+### 	DICA 	###
+Integrador 1/s é um passa baixa. Em alta freq ele funciona como circuito aberto.
+Facilita check de sanidade de função de transferência a partir de diagrama de blocos
+###################
+
+
+=== 5-3 Second Order Systems ====
+
+###   Reminder    ###
+Inverse trigonometric functions for deriving Eq. 5-12
+https://en.wikipedia.org/wiki/Inverse_trigonometric_functions
+#####################
+
+When the closed-loop system involves a numerator dynamics (zero), the unit-step response curve may exhibit a large overshoot
+
+Velocity Feedback (Tachometer, Pitch Damper... )
+
+	velocity feedbak gain can change damping ratio without affecting the undamped natural frequency of the system.
+
+
+Impulse Response
+	
+	the unit-impulse response function is the time derivative of the unit-step response function.
+
+
+=== 5-4 High Order Systems ===
+
+
+High Order System Reponse can be representes by the sum of first and second-order system responses
+
+Frações parciais: os termos com maior resíduo terão mais influência na resposta
+				  Zero perto de polo faz com que o resíduo seja pequeno. Zero "cancela" polo
+				  Quanto mais longe o polo estiver da origem, menor o residuo deste polo
+				  termos com residuo pequeno podem ser desprezados e a resposta pode ser simplificada pela soma dos termos mais relevantes
+				  
+				  Thus the response curve of a stable higher-order system is the sum of a number of
+				  exponential curves and damped sinusoidal curves.
+				  
+The type of transient response is determined by the closed-loop poles,
+while the shape of the transient response is primarily determined by the closedloop zeros
+
+	Zeros não afetam os termos exponenciais, mas afetam a magnitude e sinal dos residuos
+	
+	Sinal de entrada impacta no regime permanente e não influencia na estabilidade do sistema
+	
+Figure 5-17: good reference of pole placement objectives
+
+
+
+=== 5-5 Transient Response analysis with Matlab  ====
+
+Commands
+
+	step(num,den,t)
+	step(A,B,C,D,t)
+	
+	printsys(num,den)
+	
+	[num,den]=ord2(wn,csi)
+	[A,B,C,D]=ord2(wn,csi)
+	
+	lsim
+	
+	initial
+
+Response to intial condition
+	
+	1) Transform initial condition to transfer function
+		L{dd(x)} = s^2 X(s) - s x(0) - dx(0)
+	
+	2) Transform initial condition to State Space
+		
+		dx = Ax ,  x(0)=x0     -> There is no B matrix, because there is no external input
+		
+		Laplace Transform
+			sX(s) - x(0) = AX(s)
+		
+		Inverse of Laplace
+		dx - x(0)*dirac(t) = Ax
+
+	### IMPORTANT ###
+	Notice that by taking the Laplace transform of a differential equation and then by
+	taking the inverse Laplace transform of the Laplace-transformed equation we generate
+	a differential equation that involves the initial condition.)
+	##################
+	
+		Seja
+		
+			dz = x
+			
+		ddz = Ax + x(0)*dirac(t)
+		
+		integrating with respect to t
+		
+		dz = Az + x(0)*1(t)
+		
+		dz = Az +  B  *u(t)  <- step input
+		x = Az + B*u(t)
+		
+		
+		That is
+		
+			[x,z,t] = step(A,B,A,B)
+
+		where B = x(0); u(t) = 1(t) = step
+		
+		if there was an y
+			
+			y = Cx
+			
+		than
+			dz = Az +  B  *u(t)  <- step input
+			y = Cx = CAz + CB*u(t)
+			
+			[x,z,t] = step(A,B,CA,CB)
+			
+			
+===  5-6 Routh's Stability Criterion  ====
+		
+1) write the polynomial of CLOSED LOOP
+	ao*s^n + a1*s^(n-1) + ... + an-1*s + a0 = 0
+	
+2) If ALL coefficients are positive -> System is absolute stable
+   If any of the coefficients are zero or negative in the presence of at least one positive
+	coefficient, a root or roots exist that are imaginary or that have positive real
+	parts.Therefore, in such a case, the system is not stable
+
+3) Organize coefficients as
+
+	s^n 		a0 	a2	a4	a6
+	s^(n-1)		a1 	a3	a5	a7
+	
+	s^(n-2) 	b1 	b2	b3 	b4
+	s^(n-3)		c1 	c2	c3	c4
+	s^(n-4)		d1	d2	d3	d4
+	...
+	
+	s^2 		e1	e2
+	s			f1
+	s^0			g1
+	
+	
+	b1 = ( a1*a2 - a0*a3 )/a1
+	b2 = ( a1*a4 - a0*a5 )/a1
+	b3 = ( a1*a6 - a0*a7 )/a1
+	
+	
+	c1 = (b1*a3 - a1*b2)/b1
+	c2 = (b1*a5 - a1*b3)/b1
+	c3 = (b1*a7 - a1*b4)/b1
+	
+	d1 = (c1*b2 - b1*c2)/c1
+	d2 = (c1*b3 - b1*c3)/c1
+	
+	
+	 ^			\ 	
+	/  (+)       v (-)
+	           
+	
+PS: 
+	an entire row may be divided or multiplied by a positive number in order to simplify the 
+		subsequent numerical calculation without altering the stability conclusion.
+
+First-column term in any row is zero alone:
+
+	If a first-column term in any row is zero alone, then replace with very small positive number "e"
+	
+	If the sign of the coefficient above the zero is the same as that below it, it indicates
+		that there are a pair of imaginary roots
+		
+	If the sign of the coefficient above the zero is opposite that below it, it
+		indicates that there is one sign change
+	
+	If all the coefficients in any derived row are zero, it indicates that there are roots of
+		equal magnitude lying radially opposite in the s plane—that is, two real roots with
+		equal magnitudes and opposite signs and/or two conjugate imaginary roots.
+	
+Routh’s stability criterion states that the number of roots of Equation with positive real 
+parts is equal to the NUMBER OF CHANGES IN SIGN of the coefficients of the FIRST COLUMN of the array
+
+4) The necessary and sufficient condition that all roots lie in the left-half s plane is that 
+ALL the coefficients of Equation be positive AND ALL terms in the first column of the array
+have positive signs.
+
+Routh's criterion may be used to find out range of parameters where the system is stable.
+
+
+=== EXTRA - Hurwitz Stability Criterion ===
+
+
+If all the coefficients of the polynomial are positive, arrange these coefficients
+in the following determinant:
+
+				
+				a1	a3	a5	...	0		0		0
+				a0	a2	a4	...	0		0		0
+				0	a1	a3	... an		0		0
+Delta_n = det( 	0	a0	a2	...	an-1	0		0	)     -> (diagonal vai de a1 até an)
+				...				an-2	an		0
+				...				an-3	an-1	0
+				0	0	0		an-4	an-2	an				
+								
+where we substituted zero for as if s>n. For all the roots to have negative real parts, it is 
+necessary and sufficient that successive principal minors of be positive. The successive 
+principal minors are the following determinants:
+
+				a1	a3	...		a2*i-1
+				a0	a2	...		a2*i-2
+Delta_i = det( 	0	a1	... 	a2*i-3	)     (i = 1,2,...n-1)
+				...				...
+				0	0			ai		
+
+where as=0 if s>n. If all these determinants are positive, and a0>0 as already assumed, 
+the equilibrium state of the system whose characteristic equation is asymptotically stable
+
+
+
+===  5-7 Effects of Integral and Derivative Control Actions on System Performance  ====
+
+Integral Control Action
+	
+	Eliminate steady-state offset error
+	But may lead to oscillatory response
+	Error goes to zero, otherwise the integrator would lead to infinit response
+	reduce steady-state error -> nonzero control signal u(t)
+	may lead to oscillatory response
+	
+Derivative Control Action
+	Derivative control thus anticipates the actuating error, initiates an early corrective 
+		action, and tends toincrease the stability of the system.
+	Introduces Damping effect
+	controller with high sensitivity
+	anticipates the actuating error, 
+	initiates an early corrective action, 
+	and tends to increase the stability of the system
+	adds damping to the system
+	
+Derivative is never used alone! PD/PID
+
+	
+===  5-8 Steady-State errors in unity-feedback control systems  ====
+
+Steady-State error for a given input depends on the TYPE of OPEN-LOOP transfer function.
+
+
+Classification of Control Systems
+	Open-Loop transfer function
+	
+				  K*(Ta*s+1)(Tb*s+1)...(Tm*s+1)
+		G(s) = ------------------------------
+				s^N*(T1*s+1)(T2*s+1)...(Tp*s+1)
+
+		Multiplicity N at the origin
+		
+	System is called TYPE N    (not equal to system order!)
+	
+	Increasing N -> accuracy improved
+					decrease stability
+		
+				
+Steady-State Errors
+	the higher the gains -> the smaller the steady-state error
+							difficult to obtain reasonable relative stability
+							
+	Kp = lim G(s) = G(0)
+		 s->0
+		 
+	Kv = lim s*G(s)
+		 s-> 0
+		 
+	Ka = lim s^2*G(s)
+		 s-> 0
+
+		 
+Summary
+
+	see Table 5-1
+	
+
+
+To eliminate the steady-state error due to a step disturbance, we must have an integrator BEFORE the point where the disturbance enters.
+	
+
+	

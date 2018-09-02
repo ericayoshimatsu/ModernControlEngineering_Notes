@@ -1,0 +1,390 @@
+
+======================================================================================
+
+	C H A P T E R   7  - Control Systems Analysis and Design by 
+						     the Frequency-Response Method
+
+======================================================================================
+
+
+===	  7–1 INTRODUCTION    ===
+
+Frequency response and root-locus approaches are complementary
+
+Used for robust control theory.
+
+Pros: 	Can use data from measurements, without deriving mathematical model
+		Investigate both absolute and relative stability with open-loop freq resp (Nyquist criterion)
+		Lower noise influence
+		Can be extended to certain nonlinear control systems.
+		
+Cons: 	The correlation between frequency and transient responses is indirect
+
+
+Obtaining Steady-State Outputs to Sinusoidal Inputs
+	
+	s = jw
+	G(jw) = M phase(phi)
+	
+	The steady-state response of a stable, linear, time-invariant system to a sinusoidal input does not 
+		depend on the initial conditions and has the same frequency as the input
+	
+	x(t) = X sin(wt)
+			   wX
+	X(s) = ------------
+			s^2 + w^2
+	
+	yss(t) = a e^(-jwt) + â e^(-jwt)
+	
+	from partial fractions
+					w X				|			X G(-jw)
+		a = G(s) ---------- (s + jw)|		= - ---------
+				  s^2 + w^2 		|s=-jw		  2j
+				 
+			 X G(jw)	 
+		â = ---------
+              2j
+			  
+	G(jw) = |G(jw)| e^ (j phi)
+	
+		phi = phase(G(jw)) = atan( Im{G(jw)} / Re{G(jw)} )
+		
+		phi > 0; lead
+		phi < 0; lag
+		
+		
+Presenting Frequency-Response Characteristics in Graphical Forms
+
+	1. Bode diagram (logarithmic plot)
+	2. Nyquist (polar plot)
+	3. Nichols plot (Log magnitude vs phase plot)
+	
+	
+		
+===   7-2 BODE DIAGRAMS   ===
+
+Pros: 	Multiplication of magnitudes can be converted into addition.
+
+Octave: 	w1, 2w1
+Decades:	w1, 10w1
+
+1. Gain K
+	magnitude = 20log10(K) [dB]
+	phase = 0°
+	
+2. Integral and Derivative Factors
+	Integral
+		magnitude = -20log10(w) [dB]  -> slope: -20dB/decade or -6dB/octave
+			w = 0 => inf dB
+			
+			===================
+			   IMPORTANT
+			w = 1 => 0dB
+			===================
+			
+			phase = -90°
+	Derivative	
+		magnitude =  20log10(w) [dB]  -> slope: 20dB/decade or 6dB/octave
+			w = 1 => 0dB
+		phase = 90°
+		
+3. First-Order Factors ( 1/ 1+jwT ) -> Low pass Filter
+	magnitude = -20log10(sqrt( 1 + w^2*T^2 )) [dB]
+		w << 1/T  => -20log10(1) = 0 dB
+		
+		w =  1/2T => -20log10(sqrt(5/4)) = -0.97 dB
+		w =  1/T  => -20log10(2) = -3.03 dB
+		w =  2/T  => -20log10(sqrt(5)) + 20log10(2) = -0.97 dB
+		
+		w >> 1/T  => -20log10(wT) 
+		
+	corner frequency at w = 1/T  (divides low and high freq regions)
+		error is symmetric with respect to the corner frequency (see Fig 7-7)
+		
+	phase = -atan(wT)
+		w = 0 	  => 0°
+		w = 1/T   => -atan(1) = -45°
+		w >> 1/T  => -90°
+			*see pg 409 for more values
+		
+4. Quadratic Factors
+
+	csi << 1 Asymptotic approximations to the frequency-response curves are not accurate
+	
+	
+	magnitude: -20log10(sqrt( (1 - w^2/wn^2)^2 + (2csiw/wn)^2  ))
+	
+				w << wn  	=> -20log10(1) = 0 dB
+				w >> wn		=> -20log10(w^2/wn^2) = -40log10(w/wn) [dB]
+				
+				w = wn 		=> corner frequency 
+				near w = wn	=> resonant peak
+	
+				  2 csi w/wn
+	phase: -atan(-------------)
+				  1 - (w/wn)^2
+			
+				w = 0 		=> 0°
+				w = wn  	=> -90°
+				w -> inf	=> -180°
+	
+	
+The Resonant Frequency wr and the Resonant Peak Value Mr
+	
+	wr = wn*sqrt( 1 - 2csi^2 )
+		csi -> 0 	=> wr -> wn
+		
+		wr < wd = wn*sqrt( 1 - csi^2 )
+
+				  1
+	Mr = ---------------------
+	      2 csi sqrt(1-csi^2)
+		  
+							 csi
+	phaser = -90° + asin(-------------)
+						 sqrt(1-csi^2)
+	
+	
+General Procedure for Plotting Bode Diagrams
+
+	Use normalized form:
+		
+		example:
+					(jw + a)	            a* (jw/a + 1)
+		G(jw) = -----------------  =>  -------------------------
+				((jw)^2 + jw + b) 		b* [(jw)^2/b + jw/b + 1]
+				
+				
+				
+Minimum-Phase Systems and Nonminimum-Phase Systems				
+				
+	Poles and/or zeros in the RIGHT-half s plane are NONMINIMUM-phase transfer functions.			
+				
+	For a minimum-phase system, the magnitude and phase-angle characteristics are uniquely related			
+				
+	Nonminimum-phase situations may arise in two different ways. 
+		1. System includes a nonminimum-phase element or elements.
+		2. A minor loop is unstable.
+			
+	Nonminimum-phase systems are slow in responding -> Nonminimum-Phase-Lag
+	
+	
+Transport Lag or Dead Time
+	
+	Also has nonminimum-phase behavior
+	
+	G(jw) = e ^(-jwT)
+	
+	magnitude: |coswT - j sinwT| = 1
+	phase: -wT [rad/s] = -57.3 wT [deg/s]
+	
+	
+Relationship between System Type and Log-Magnitude Curve
+	Observe slope of the log-magnitude curve at low frequency
+	
+	1. Static Position Error Constant
+		slope: constant -> horizontal line
+		gain: 20log10(Kp)
+		
+	2. Static Velocity Error Constant
+		slope: -20dB/decade
+		gain: 20log10(Kv) at w = 1 (considering the asymptote -20dB/decade, not the actual gain)
+		
+	3. Static Acceleration Error Constant
+		slope: -40dB/decade
+		gain: 20log10(Ka) at w = 1 (considering the asymptote -40dB/decade, not the actual gain) 
+	
+	
+	
+	
+===   7-3 POLAR PLOTS / NYQUIST PLOTS  ===
+	
+Locus of vetors |G(jw)| phase(G(jw)) as is varied froom 1 to inf
+
+Positive angle: counterclockwise
+	
+
+1. Integral and Derivative Factors (1/jw)
+	Integral:
+		phase(G(1/jw)) = -90°
+			Negative Imaginary Axis
+			
+	Derivative:
+		phase(G(1/jw)) = +90°
+			Positive Imaginary Axisv
+	
+			^ Im
+			|
+			|
+	-------------> Re
+			|
+			|
+	
+	
+2. First Order Factors 
+	
+			    1
+	G(jw) = ---------
+			 1 + jwT
+	
+		G(j0) 		= 1 phase(0°)
+		G(j 1/T)	= 1/sqrt(2) phase(-45°)
+		G(j inf)	= 0 phase(-90°)
+		
+		semicircle: radius 0.5, center 0.5
+		
+	G(jw) = 1 + jwT
+		upper half straight line passsing through (1,0), parallel to imaginary axis
+		
+		^ Im	^ w->inf
+		|		|
+		|		|
+	-----------------> Re
+		|		1
+		|
+
+3. Quadratic Factors
+
+	G(j 0) 	=  1 phase(0°)
+	G(j inf)= 0 phase(-180°) -> tangent to negative real axis
+
+	csi < 1
+		G(j wn) = 1/(j2csi) phase(-90°) -> intersection with imaginary axis
+
+	csi > 1
+		tends to semicircle
+		
+		
+General Shapes of Polar Plots
+
+                   K(1 + jwTa)(1 + jwTb)...
+	G(jw) = -------------------------------------
+		     (jw)^lambda (1 + jwT1)(1 + jwT2)...
+		
+		
+		
+	1. lambda = 0; Type 0 systems
+		start: finite on the positive real axis
+		final: origin, tangent to one of the axes
+		
+	2. lambda = 1; Type 1 systems
+		start: infinite, phase -90°
+		low freq: asymptotic to a line parallel to the negative IMAGINARY axis
+		final: origin, tangent to one of the axes
+		
+	3. lambda = 2; Type 2 systems
+		start: infinity, phase -180°
+		low freq: asymptotic to a line parallel to the negative REAL axis
+		final: origin, tangent to one of the axes
+		
+see Table 7-1 Polar Plots of Simple Transfer Functions		
+
+		
+Nyquist Plots with MATLAB
+
+	[re,im,w] = nyquist(num,den,w)
+	
+	warning message “Divide by zero” -> define frequency range
+	
+	
+	
+===   7-4 LOG-MAGNITUDE-VERSUS-PHASE PLOTS / NICHOLS PLOTS  ===
+
+Pros: easy to determine relative stability
+	  plots for G(jw) and 1/G(jw) are skew symmetrical about the origin
+
+
+	
+	
+===   7-5 NYQUIST STABILITY CRITERION  ===
+
+Determines stability of closed-loop from open-loop
+
+Poles of characteristic equation must lie on the left-half s-plane
+
+	1 + G(s)H(s) = 0
+
+Experimentally determined frequency response may be used for stability analysis
+
+
+# for a given continuous closed path in the s plane that does not go
+	through any singular points, there is a correspondent closed curve in the F(s) plane
+	
+
+Assumption: open-loop G(s)H(s) is representable as a ratio of polynomials in s
+			degree of denominator >= degree of numerator
+			
+			
+Contour does NOT PASS THROUGH pole or zero
+
+N: encirclements clockwise of the origin of F(s)
+Z: number of zeros of F(s), within contour in s-plane
+P: number of poles of F(s), within contour in s-plane (which is equal to poles of G(s)H(s))
+
+N = Z - P
+
+P can be determined from F(s) = 1 + G(s)H(s)
+
+Z will become the CLOSED LOOP POLES, then Z must be equal to zero for stability
+
+Contour: Nyquist path, encloses right-half plane (clockwise). 
+		 Does not pass through poles or zeros at imaginary axis or origin
+
+Evalute for s=-j(inf) to s=j(inf)
+
+Encirclements of the origin of 1 + G(jw)H(jw) = Encirclements of (-1 + 0j) of G(jw)H(jw)
+
+Plots of G(jw)H(jw) are symmetrical to G(-jw)H(-jw)
+
+
+NYQUIST STABILITY CRITERION 
+[ for a special case when G(s)H(s) has neither poles nor zeros on the jw axis]: 
+In the system shown in Figure 7–44, if the open-loop transfer function
+G(s)H(s) has k poles in the right-half s plane and lim s->inf G(s)H(s) = cte,
+then for stability, the G(jw)H(jw) locus, as w varies from –inf to inf must encircle the
+–1+j0 point k times in the counterclockwise direction.
+
+	if P != 0, then N = -P. For stability, P counterclockwise encirclements
+	
+	if P = 0, then Z = N. For stability, NO encirclements
+	
+	Care must be taken when testing stability of multiple loop system.
+		Simple inspection of encirclements are NOT ENOUGH. Use Routh-Hurwitz also.
+
+		
+		
+Special Case when G(s)H(s) Involves Poles and/or Zeros on the jw Axis
+	
+NYQUIST STABILITY CRITERION 
+[for a general case when G(s)H(s) has poles and/or zeros on the jv axis]: 
+In the system shown in Figure 7–44, if the open-loop transfer function
+G(s)H(s) has k poles in the right-half s plane, then for stability the G(s)H(s) locus,
+as a representative point s traces on the modified Nyquist path in the clockwise direction,
+must encircle the –1+j0 point k times in the counterclockwise direction.
+
+
+=== 7-6 STABILITY ANALYSIS ====
+
+
+N = Z - P
+Z must be zero for stability
+
+
+Conditionally Stable System (AVOID!)
+	There is a range of open-loop gains that enables stable closed loop
+	
+	
+Multiple Loop System
+	Caution, inner loop may be unstable, but with outer loop system can be stable again.
+	Nichols plot may assist on depeveloping a stable outer loop
+	
+	if a feedback loop is eliminated by means of block diagram reductions,
+		possibility that unstable poles are introduced.
+	if the feedforward branch is eliminated by means of block diagram reductions, 
+		possibility that right-half plane zeros are introduced.
+	
+Nyquist Stability Criterion Applied to Inverse Polar Plots.
+	May be applied to 1/G(s)H(s). It's easier to find right-half poles of 1/G(s)H(s) than the right-half zeros of G(s)H(s)
+	In general, if experimental frequency-response data cannot be put into analytical form, 
+		both the G(jw)H(jw) and 1/G(jw)H(jw) loci must be plotted.
+

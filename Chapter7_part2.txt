@@ -1,0 +1,462 @@
+
+======================================================================================
+
+	C H A P T E R   7  - Control Systems Analysis and Design by 
+						     the Frequency-Response Method
+	(PART 2)
+	
+======================================================================================
+
+		
+===  7–7 RELATIVE STABILITY ANALYSIS  ===
+
+Assumptions: 
+	Unity Feedback
+	Minimun-Phase Systems
+	
+
+Relative Stability Analysis by Conformal Mapping
+	The closer the closed-loop poles are located to the jw axis, the closer the G(jw)
+		locus is to the –1+j0 point
+
+
+Phase and Gain Margins
+	The closeness of the G(jw) locus to the –1+j0 point can be used as a measure of the 
+		margin of stability. (This does not apply, however, to conditionally stable systems.)
+		
+	phase margin = 180° + phi
+	
+		gain crossover frequency (phi): w @ |G(jw)| = 1 = 0dB	
+		
+					    1
+	gain margin = ------------
+					|G(jw1)|
+					
+				= -20 log10 |G(jw1)| [dB]
+	
+		phase crossover frequency (w1): w @ phase(G(jw)) = -180°
+		
+		
+	For a NONMINIMUN-PHASE system with unstable open loop, the stability condition will be 
+		satisfied if the G(jw) plot encircles the –1+j0 point. Hence, such a stable 
+		nonminimum-phase system will have negative phase and gain margins
+		
+		
+	For stable systems having TWO OR MORE GAIN CROSSOVER FREQUENCIES, the phase margin is 
+		measured at the HIGHEST GAIN crossover frequency.
+		
+		
+	"For satisfactory performance, 
+		the PHASE MARGIN should be between 30° and 60°, 
+		and the GAIN MARGIN should be greater than 6 dB."
+		
+	In most practical cases, a slope of –20 dB/decade is desirable at the gain crossover 
+		frequency for stability, for minimum-phase systems
+		
+	For NONMINIMUN-PHASE system use Nyquist diagram approcah rather than Bode diagram approach.
+		
+		
+Obtaining Gain Margin, Phase Margin, Phase-Crossover Frequency, and Gain- Crossover Frequency with MATLAB.
+		
+	[Gm,pm,wcp,wcg] = margin(sys)
+		
+		Gm is the gain margin
+		pm is the phase margin
+		wcp is the phase-crossover frequency
+		wcg is the gain-crossover frequency	
+		
+		
+		
+Resonant Peak Magnitude Mr and Resonant Frequency wr
+
+	Open Loop
+
+		C(s) 		wn^2
+		---- = ------------------	
+		R(s)    s (s + 2*csi*wn)
+
+
+	Closed Loop
+
+		C(s) 			wn^2
+		---- = -------------------------	
+		R(s)    s^2 + 2*csi*wn*s + wn^2
+
+
+	wr = wn * sqrt(1 - 2csi^2)
+	
+					1
+	Mr = ------------------------
+		 2 * csi * sqrt(1-csi^2)
+		 
+		 
+	The resonant peak magnitue gives an indication of the relative stability
+		Great Mr: dominant poles with small damping
+		Small Mr: system is well damped
+		
+	Easy to measure experimentally
+	
+	
+	
+Correlation between Step Transient Response and Frequency Response in the Standard Second-Order System.
+
+
+	wd = wn * sqrt(1 - csi^2)
+	
+					
+	Mp = e ^ -pi*(csi/sqrt(1-csi^2))
+		 	
+
+
+	1. Phase Margin and Damping Ratio are directly related
+
+		rule of thumb (approx) => csi = phase margin / 100°
+	
+	2. For small csi, wd approx wr
+
+	3. 	Csi and Mr are inversely proportional
+		Csi and Mp are inversely proportional
+
+	The time response of the standard second-order system can be predicted exactly
+		from a knowledge of the Mr and wr of its closed-loop frequency response.
+		
+		
+		
+Correlation between Step Transient Response and Frequency Response in General Systems.
+
+	Additional zeros and/or poles may change the correlation between the step transient 
+		response and frequency response.
+		
+	For linear, time-invariant, higher-order systems having a DOMINANT PAIR OF COMPLEX CONJUGATE
+		CLOSED-LOOP POLES:
+		
+		1. Mr is indicative of relative stability
+		
+				1.0 < Mr < 1.4  =>  0dB < Mr < 3dB
+				
+				corresponds to 0.4 < csi < 0.7
+				
+				
+		2. wr is indicative of speed of transient response
+		
+			wd is somewhere between gain crossover frequency and phase crossover frequency
+			
+		3. For lightly damped systems: wr approx wd
+
+
+Cutoff Frequency
+
+	wb at which the magnitude of the CLOSED-LOOP frequency response is 3 dB below its 
+	zero-frequency value
+	
+		|C(jw)|	   |C(j0)|
+		------- =  ------- - 3dB,    for w > wb
+		|R(jw)|    |R(j0)|
+
+Bandwidth
+
+	frequency between 0 <= w <= wb (cutoff freq)
+	
+	rise time and bandwidth are inversely proportional
+	
+	Spec of bandwidth may come from:
+		
+		1. A large bandwidth corresponds to a small rise time, or fast response
+		2. High-Freq noise filtering
+	
+Cutoff Rate
+		
+	Is the SLOPE of the log-magnitude curve near the cutoff frequency. The cutoff rate indicates
+		the ability of a system to distinguish the signal from noise.
+
+		
+		
+		
+Frequency Domain Performance Specifications
+	- phase margin
+	- gain margin
+	- resonant peak Mr
+	- resonant frequency wr 
+	- cutoff frequency
+	- bandwidth
+	- cutoff rate
+
+	
+	
+===  7–8 CLOSED-LOOP FREQUENCY RESPONSE OF UNITY FEEDBACK SYSTEMS  ====
+
+
+
+			  ^
+			  |
+	P(-1+0j)  |O
+	---x------+----->
+			  |
+		 x    |
+		 A    |
+
+	
+vec(OA) = G(jw1)
+
+vec(OA)        G(jw1)							  C(jw1)
+------- = --------------- = closed loop G(jw1) = -------
+vec(PA)    G(jw1) - (-1) 						  R(jw1)
+
+
+C(jw)
+----- =  M e^(ja)
+R(jw)
+
+
+Constant-Magnitude Loci (M circles)
+	
+	G(jw) = X + jY
+	
+		 | X + jY |
+	M = -------------- (closed loop magnitude)
+		|1 + X + jY|
+		
+	
+	- straight line parallel do y-axis passing through (-1/2 , 0)
+									M^2							     M
+	- circle with center at X = - --------- , Y = 0 and radius | --------- |
+								  (M^2 - 1)						 (M^2 - 1)
+								  
+	- see Figure 7-81
+	
+	
+	-     M = 1: 	straight line (-1/2 , 0)
+	-     M > 1: 	left of straight line
+	- 0 < M < 1:	right of straight line
+	- M -> inf :	circles tend to -1+0j
+	- M -> 0   : 	circled tend to origin
+
+	- M circle with smallest radius tangent to G(jw) gives the resonant peak magnitude Mr 
+
+Constant-Phase Loci (N circles)
+	
+						   X + jY
+	phase(e^ja) = phase( ----------- )
+						 1 + X + jY
+		
+	tan(a) = N	
+		
+	
+	- circle with center at X = -1/2, Y = 1/(2N), radius = sqrt(1/4 + 1/(2N)^2)
+	- each circle passes through (0,0) and (-1+0j)
+	- a = a1 +- 180°n (n=1,2,..)
+	- start at 0 freq and proceed to higher freqs. Phase-angle curve shall be continuous.
+	
+	
+	
+Nichols Chart
+
+	- critical point (-1+0j) is mapped as (0dB, -180°)
+	- gain crossover frequency: G(jw) intesects the 0dB axis
+	- phase crossover frequency: G(jw) intesects the -180° axis
+	- bandwidth: freq at intersection of G(jw) and M = -3dB
+	
+	
+	
+===  7–9  EXPERIMENTAL DETERMINATION OF TRANSFER FUNCTIONS  ====
+
+Frequency-response measurements to plot Bode Diagram. Then use asymptotic approximation to 
+	determine transfer function and corner freqs.
+
+Sinusoidal-Signal Generators
+	Range: 	0.001 Hz to 10 Hz for large-time-constant systems
+			0.1 Hz to 1000Hz for small-time-constant systems
+
+
+Determination of Minimum-Phase Transfer Functions from Bode Diagram
+
+	Draw asymptotes to the experimentally obtained log-magnitude curve 
+		(slopes must be multiples od +-20deb/decade)
+	
+	Undamped natural freq: corner freq
+	
+	Damping Ratio: determined from resonant peak near corner freq and curves from Fig 7-9
+	
+	Gain: analyse low-freq
+	
+			lim G(jw) = K / (jw)^lambda
+			w-> 0
+
+	
+		1. lambda = 0 (type 0)
+		
+			K = G(jw) for w << 1
+			
+		2. lambda = 1 (type 1)
+			K = numerically freq at low-freq asymptote intesects 0dB
+			
+		3. lambda = 2 (type 2)
+			sqrt(K) = numerically freq at low-freq asymptote intesects 0dB
+
+	If phase at very high freq is not equal to -90(degree(num) - degree(den)), then transfer 
+		function must be a NONMINIMUM-PHASE transfer function
+		
+		
+Non-Minimum Phase Transfer Functions
+
+	Computed vs. Experimental phase lag
+		
+		if 180° offset -> zero at right-half s plane
+		if constante rate -> transport lag / dead time: 
+			G(s)s^(-Ts), where T is the slope at high freq
+
+			
+	
+A Few Remarks on the Experimental Determination of Transfer Functions
+
+1. It is easier to obtain accurate amplitude than phase-shift measurements
+
+2. Measuring Equipment should have a flat magnitude-vs-freq curve and phase angle proportional
+	to the freq
+	
+3. Care must be taken due to nonlinearities. Input Amplitude. Saturation and DeadZone trade-offs
+	Output must have a sinsoidal form, otherwise system is operating in nonlinear region
+	
+4. Sinusoidal test inputs may be superimposed on the normal inputs, so that the system does not
+	need to be stopped. Use of stochastic signals (white noise) and correlation to obtain the
+	transfer function
+	
+
+===  7–10  CONTROL SYSTEMS DESIGN BY FREQUENCY-RESPONSE APPROACH  ====
+
+For any design use BOTH approaches: Root-locus and frequency
+
+In freq-resp approach, transient response is indirectly specified
+
+Transient Response is specified indirectly in terms of:
+
+	Phase Margin				--|
+	Gain Margin			    	  +-> estimated damping
+	Resonant Peak Magnitude 	--|
+	
+	Resonant Frequency			--|
+	Gain Crossover Frequency      +-> estimated speed of transient response
+	Bandwidth                   --|
+
+Use when deriving mathematical equations are difficult -> determine freq-resp experimentally
+
+Freq-Resp approach is more conveniet when dealing with high-freq noise
+
+First adjust open-loop gain to satisfy steady-state accuracy
+Then check phase and gain margins. If specs are not met, then design a suitable compensator.
+
+
+Information Obtainable from Open-Loop Freq Resp
+
+	Low Freq (far below crossover freq): steady-state behaviour of closed-loop system
+	Mid Freq (near crossover freq):		relative stability
+	High Freq (above crossover freq): 	complexity of system
+	
+	
+Requirements on Open-Loop Freq Resp
+	Compensation: trade-off between steady-state accuracy and relative stability
+	
+	Low Freq: 	High gain (steady-state accuracy)
+	Mid Freq: 	-20dB/decade (assure phase margin)
+	High Freq: 	greater slope (atenuate noise)
+	
+	
+Basic Characteristics of Lead, Lag and Lag-Lead Compensation
+
+	Lead compensation: 	Improves transient. 
+						May accentuate high-freq noise 
+	Lag compensation: 	Improves steady-state. 
+						Increase transient-resp time. 
+						Supress high-freq noise effects
+	Lag-Lead comp.: 	Use both
+						Increase order of system by 2
+						More complex and more difficult to control transient behaviour
+						
+						
+===  7-11  LEAD COMPENSATION  ===
+
+Characteristics of Lead Compensation
+	
+				 Ts + 1 		s + 1/T
+	Gc(s) = Kc a ------- = Kc ----------- 	(0 < a < 1)
+				 aTs + 1		s + 1/aT
+
+	a: attenuation factor (thumb rule: min(a) = 0.05
+	
+	
+				  1 - a
+	sin(phi_m) = -------- 
+				  1 + a
+
+	phi_m: maximum phase lead  (thumb rule: max(phi_m) = 65°)
+
+		   1
+	wm = ------
+		sqrt(aT)
+		
+	High-pass filter
+	
+	
+Lead Compensation Techniques Based on the Frequency-Response Approach
+	
+	
+					Ts + 1 		   Ts + 1 
+ Gc(s)G(s) =  Kc a ------- G(s) = ------- Kc a G(s)
+					aTs + 1       aTs + 1
+
+
+					
+1. Determine K = Kc a to satisfy static error requirement
+
+2. Draw bode with uncompensated sytstem Kc a G(s)
+
+3. Determine necessary phase-lead angle and add 5° to 12° (gain crossover freq shifts to the right)
+
+4. Determine a by the maximum phase lead required.
+   Determine w where |Kc a G(s)| = -20log(1/sqrt(a)). w is the new gain crossover freq
+   wm = 1/(sqrt(a)T)
+   
+5. Determine corner freq of compensator
+
+	zero: w = 1/T
+	
+	pole: w = 1/(aT)
+	
+6. Determine Kc = K/a
+
+7. Chech if gain margin is satisfactory
+
+
+===  7-11  LAG COMPENSATION  ===
+	
+	
+Characteristics of Lag Compensators
+	
+				 Ts + 1 		s + 1/T
+	Gc(s) = Kc b ------- = Kc ----------- 	(b > 1)
+				 bTs + 1		s + 1/bT
+		
+	Low-pass filter
+
+	
+Lag Compensation Techniques Based on the Frequency-Response Approach
+	
+	
+	
+	
+	
+	
++++++++++++++++++ 
+Bookmark: pg. 502
++++++++++++++++++
+
+
+398 -566
+
+398  415  432  449  466  483  500  517  534  551  568
+00---10---20---30---40---50---60---70---80---90---100
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+Exs 
+1 - 25

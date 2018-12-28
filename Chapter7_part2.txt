@@ -8,7 +8,7 @@
 ======================================================================================
 
 		
-===  7–7 RELATIVE STABILITY ANALYSIS  ===
+===  7â€“7 RELATIVE STABILITY ANALYSIS  ===
 
 Assumptions: 
 	Unity Feedback
@@ -17,14 +17,14 @@ Assumptions:
 
 Relative Stability Analysis by Conformal Mapping
 	The closer the closed-loop poles are located to the jw axis, the closer the G(jw)
-		locus is to the –1+j0 point
+		locus is to the â€“1+j0 point
 
 
 Phase and Gain Margins
-	The closeness of the G(jw) locus to the –1+j0 point can be used as a measure of the 
+	The closeness of the G(jw) locus to the â€“1+j0 point can be used as a measure of the 
 		margin of stability. (This does not apply, however, to conditionally stable systems.)
 		
-	phase margin = 180° + phi
+	phase margin = 180Â° + phi
 	
 		gain crossover frequency (phi): w @ |G(jw)| = 1 = 0dB	
 		
@@ -34,11 +34,11 @@ Phase and Gain Margins
 					
 				= -20 log10 |G(jw1)| [dB]
 	
-		phase crossover frequency (w1): w @ phase(G(jw)) = -180°
+		phase crossover frequency (w1): w @ phase(G(jw)) = -180Â°
 		
 		
 	For a NONMINIMUN-PHASE system with unstable open loop, the stability condition will be 
-		satisfied if the G(jw) plot encircles the –1+j0 point. Hence, such a stable 
+		satisfied if the G(jw) plot encircles the â€“1+j0 point. Hence, such a stable 
 		nonminimum-phase system will have negative phase and gain margins
 		
 		
@@ -47,10 +47,10 @@ Phase and Gain Margins
 		
 		
 	"For satisfactory performance, 
-		the PHASE MARGIN should be between 30° and 60°, 
+		the PHASE MARGIN should be between 30Â° and 60Â°, 
 		and the GAIN MARGIN should be greater than 6 dB."
 		
-	In most practical cases, a slope of –20 dB/decade is desirable at the gain crossover 
+	In most practical cases, a slope of â€“20 dB/decade is desirable at the gain crossover 
 		frequency for stability, for minimum-phase systems
 		
 	For NONMINIMUN-PHASE system use Nyquist diagram approcah rather than Bode diagram approach.
@@ -110,7 +110,7 @@ Correlation between Step Transient Response and Frequency Response in the Standa
 
 	1. Phase Margin and Damping Ratio are directly related
 
-		rule of thumb (approx) => csi = phase margin / 100°
+		rule of thumb (approx) => csi = phase margin / 100Â°
 	
 	2. For small csi, wd approx wr
 
@@ -183,7 +183,7 @@ Frequency Domain Performance Specifications
 
 	
 	
-===  7–8 CLOSED-LOOP FREQUENCY RESPONSE OF UNITY FEEDBACK SYSTEMS  ====
+===  7â€“8 CLOSED-LOOP FREQUENCY RESPONSE OF UNITY FEEDBACK SYSTEMS  ====
 
 
 
@@ -244,21 +244,21 @@ Constant-Phase Loci (N circles)
 	
 	- circle with center at X = -1/2, Y = 1/(2N), radius = sqrt(1/4 + 1/(2N)^2)
 	- each circle passes through (0,0) and (-1+0j)
-	- a = a1 +- 180°n (n=1,2,..)
+	- a = a1 +- 180Â°n (n=1,2,..)
 	- start at 0 freq and proceed to higher freqs. Phase-angle curve shall be continuous.
 	
 	
 	
 Nichols Chart
 
-	- critical point (-1+0j) is mapped as (0dB, -180°)
+	- critical point (-1+0j) is mapped as (0dB, -180Â°)
 	- gain crossover frequency: G(jw) intesects the 0dB axis
-	- phase crossover frequency: G(jw) intesects the -180° axis
+	- phase crossover frequency: G(jw) intesects the -180Â° axis
 	- bandwidth: freq at intersection of G(jw) and M = -3dB
 	
 	
 	
-===  7–9  EXPERIMENTAL DETERMINATION OF TRANSFER FUNCTIONS  ====
+===  7â€“9  EXPERIMENTAL DETERMINATION OF TRANSFER FUNCTIONS  ====
 
 Frequency-response measurements to plot Bode Diagram. Then use asymptotic approximation to 
 	determine transfer function and corner freqs.
@@ -301,7 +301,7 @@ Non-Minimum Phase Transfer Functions
 
 	Computed vs. Experimental phase lag
 		
-		if 180° offset -> zero at right-half s plane
+		if 180Â° offset -> zero at right-half s plane
 		if constante rate -> transport lag / dead time: 
 			G(s)s^(-Ts), where T is the slope at high freq
 
@@ -322,7 +322,7 @@ A Few Remarks on the Experimental Determination of Transfer Functions
 	transfer function
 	
 
-===  7–10  CONTROL SYSTEMS DESIGN BY FREQUENCY-RESPONSE APPROACH  ====
+===  7â€“10  CONTROL SYSTEMS DESIGN BY FREQUENCY-RESPONSE APPROACH  ====
 
 For any design use BOTH approaches: Root-locus and frequency
 
@@ -388,7 +388,7 @@ Characteristics of Lead Compensation
 	sin(phi_m) = -------- 
 				  1 + a
 
-	phi_m: maximum phase lead  (thumb rule: max(phi_m) = 65°)
+	phi_m: maximum phase lead  (thumb rule: max(phi_m) = 65Â°)
 
 		   1
 	wm = ------
@@ -410,7 +410,7 @@ Lead Compensation Techniques Based on the Frequency-Response Approach
 
 2. Draw bode with uncompensated sytstem Kc a G(s)
 
-3. Determine necessary phase-lead angle and add 5° to 12° (gain crossover freq shifts to the right)
+3. Determine necessary phase-lead angle and add 5Â° to 12Â° (gain crossover freq shifts to the right)
 
 4. Determine a by the maximum phase lead required.
    Determine w where |Kc a G(s)| = -20log(1/sqrt(a)). w is the new gain crossover freq
@@ -427,7 +427,7 @@ Lead Compensation Techniques Based on the Frequency-Response Approach
 7. Chech if gain margin is satisfactory
 
 
-===  7-11  LAG COMPENSATION  ===
+===  7-12  LAG COMPENSATION  ===
 	
 	
 Characteristics of Lag Compensators
@@ -437,17 +437,131 @@ Characteristics of Lag Compensators
 				 bTs + 1		s + 1/bT
 		
 	Low-pass filter
+	
+	Decrease crossover freq and therefore bandwidth
+	
+	Provides attenuation near and above the gain crossover frequency and thereby
+	 allows an increase of gain at the low-frequency range to improve the steady-state
+	 performance.
 
 	
 Lag Compensation Techniques Based on the Frequency-Response Approach
 	
+	Provide attenuation in high-freq range to give sufficient phase margin
+	
+					      Ts + 1 	  		  Ts + 1 		  Ts + 1 
+	1.  Gc(s) G(s) = Kc b ------- G(s) 	= K  ------- G(s) =  ------- G1(s) 
+						  bTs + 1	  		  bTs + 1         bTs + 1
+						  
+		Determine K to satisfy the static velocity error requirement
+		
+		
+	2. Determine gain and margin phase of G1(jw) = Kc b G(jw)
+		Find freq where phase angle is equal to 
+			-180Â° + required margin + (5Â° - 12Â° due to the lag of compensator)
+			
+		This is the new gain crossover freq (w @ |G(jw)| = 1 = 0dB)
+	
+	3. Lag compensator poles should be lower than the crossover freq
+		(1 octave to 1 decade below crossover freq)
+		
+	4. Determine necessary attenuation at the new crossover freq 
+		(curve down magnitude to 0dB at new crossover freq)
+		Attenuation is -20log(b) -> determine b
+		
+	5. Determine Kc = K/b
 	
 	
+A Few Comments on Lag Compensation
+
+
+	1. Lag compensator are low-pass filters. High gain in lower freq (improve steady-state) and 
+		attenuation in high freq
+		
+	2. Compensator pole and zero shall be close to origin (but not too close). 
+	   Lag compensator will create a closed-loop pole in this region!
+	   Transient Response to disturbance may last very long.
+	   
+	3. Compensator will lower gain crossover freq, to a point where phase margin is acceptable.
+	   It will lower bandwidth and slow the transient response.
+	   
+	4. Lag compensator acts almost as a PI control. Compensate system is less stable.
+		Choose compensator T larger than largest time constant of the system
+		
+	5. Conditional stability may occur when a system having saturation or limiting is
+		compensated by use of a lag compensator.
+	   
+	   
+===  7-13  LAG-LEAD COMPENSATION  ===
+
+
+			 	s + 1/T1	   s + 1/T2
+	Gc(s) =  Kc----------- * ----------  (lag: b > 1) (lead: c > 1)
+			 	s + c/T1	   s + 1/bT2
+
+
+	if b = c
 	
+		w1 = 1/sqrt(T1 T2)
+		
+		
+		
+Lagâ€“Lead Compensation Based on the Frequency-Response Approach
 	
+	Lead portion: add phase-lead, thus increasing the phase margin at gain crossover frequency (0dB)
+	Lag portion: add attenuation near and above the gain crossover frequency (0dB)
+
+
+	1. Select K and Kc, so that static error constant requirement is satisfied
+	2. Choose new gain crossover frequency, so that phase margin is satisfied (usually lower than actual crossover freq)
+	3. Define corner frequency of the lag-portion (w = 1/T2 ~ 1 decade below new gain crossover freq)
+	4. phi_m = (b - 1)/(b + 1)
+	5. from the new gain cross-over freq and minus the gain at gain crossover freq, draw a line 
+		with -20dB/dec. The intersection between 0dB and -20dB are the lead corner freqs
+
+
+		
+Summary of Control System Design by Frequency Reponse Approach
+
+	Use for systems that cannot be designed with root locus
 	
+	Comparison of Lead, Lag, and Lag-Lead Compensation
+	
+		Lead compensation:
+			improve stability margins
+			phase-lead contribution
+			higher crossover freq -> larger bandwidth -> lower settling time 
+			Will require a lager gain than lag compensation 
+				-> larger space, greater weight, higher cost
+			Saturation problems
+			
+		Lag compensation:
+			improve steady-state performance
+			attenuation at high freq 
+				-> total system gain can be increased 
+				-> steady-state accuracy improved
+			noise attenuation
+			bandwidth is reduced -> slower speed to respond
+			introduce a pole zero pair near the origin 
+				-> long tail with small amplitude in transient response
+			
+		Lag-Lead compensation:
+			Both fast response and good static error
+			Low-freq gain increased
+			Bandwidth increased
+			Margins increased
+			
+	Cancelation of Undesirable Complex-Conjugate Poles
+
+		If TF contains one or more pairs of complex-conjugate poles
+			-> lead, lag, lad-lead may NOT work
+			-> than cancel undesirable poles with zeros and place desired poles at compensator 
+
+		
+			
+			
 +++++++++++++++++ 
-Bookmark: pg. 502
+Bookmark: pg. 520
 +++++++++++++++++
 
 
@@ -455,7 +569,7 @@ Bookmark: pg. 502
 
 398  415  432  449  466  483  500  517  534  551  568
 00---10---20---30---40---50---60---70---80---90---100
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
 Exs 

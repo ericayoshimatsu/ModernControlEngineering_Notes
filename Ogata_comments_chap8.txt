@@ -1,0 +1,249 @@
+
+======================================================================================
+
+	C H A P T E R   8  - PID Controllers and 
+							Modified PID Controllers
+
+======================================================================================
+
+=== 8-1 INTRODUCTION ====
+
+General applicability of PID, even for unknow plant model
+Provide satisfactory control (may not be optimal)
+
+
+=== 8-2 ZIEGLER-NICHOLS RULES FOR TUNING PID CONTROLLERS ====
+
+Experimental approach to tune PID controller (Kp, Ti, Td)
+Useful when plant mathematical models are unknow
+Educated guess for paramenters values, rather than final settings in one shot
+
+Gc = Kp ( 1 + 1/Ti s + Td s)
+
+
+Ziegler-Nichols Rules for Tuning PID controllers
+	
+	First Method:
+		Reponse to unit-step input
+		if response is a S-shaped curve -> time constant T + delay L
+
+		C(s)	K e^(-Ls)
+		---- = -----------
+		U(s)     Ts + 1 
+
+		
+		set controller as Table 8-1
+		
+	
+	Second Method:
+		Ti = inf, Td = 0
+		adjust Kp to critical value (sustained oscillations) - Kcr and Pcr (oscillation period)
+		if response is not oscillatory, than this method is NOT applicable
+		
+		if transfer function is known, then use root-locus to find Kcr and Pcr = 2pi/wcr
+		
+		set controller as Table 8-2
+
+		
+=== 8-3 DESIGN OF PID CONTROLLERS WITH FREQUENCY RESPONSE APPROACH ====
+
+	Basically trial and error ¬¬
+	
+
+=== 8-4 DESIGN OF PID CONTROLLERS WITH COMPUTATION OPTIMIZATION APPROACH ====
+
+	Basically trial and error with Matlab ¬¬
+
+
+=== 8-5 MODIFICATIONS OF PID CONTROL SCHEMES ====
+
+Instead of a pure derivative, employ 
+
+	   Td s
+	-----------  c in [0,1]		(* high-pass)
+	1 + c Td S
+
+	(Sharp pulse function -> Set-point kick)
+	
+	
+PI-D Control
+	To avoid set-point kick, derivative action ONLY in the FEEDBACK path and NOT on REFERENCE
+	
+	U(s) = Kp (1 + 1/Tis)R(s) - Kp(1 + 1/Tis + Tds)B(s)
+	
+	E(s) = R(s) - B(s)
+	
+	same disturbance response (Y(s)/D(s)) of "normal" PID
+	
+	
+I-PD Control
+	In case of a step input reference, may be advantageous to move P and D to feedback path
+	
+	U(s) = Kp (1/Tis)R(s) - Kp(1 + 1/Tis + Tds)B(s)
+	
+	E(s) = R(s) - B(s)
+	
+	Must have Integral control action
+	
+	same disturbance response (Y(s)/D(s)) of "normal" PID and PI-D 
+	
+Two-Degrees-of-Freedom PID Control
+	PI-PD
+	PID-PD
+	
+	Move only part of P and/or D to the feedback path.
+	A controller in feedfoward path and another in feedback path
+	
+	
+=== 8-6 TWO-DEGREE-OF-FREEDOM CONTROL ====
+
+Consider Disturbance before plant and signal noise after measurement
+Gc(s): Controller
+Gp(s): Plant
+
+			Y(s)		Gc Gp
+	Gyr(s) = ---- = ------------
+			R(s)	 1 + Gc Gp
+		
+			Y(s)		 Gp
+	Gyd(s) = ---- = ------------
+			D(s)	 1 + Gc Gp
+	
+			Y(s)		  Gc Gp
+	Gyn(s) = ---- = -  ------------
+			N(s)	    1 + Gc Gp		 
+
+		 
+For a given Gxz(s), the other two are fixed
+
+
+Gc1(s): Error
+Gc2(s): Feedback
+
+			Y(s)		   Gc1 Gp
+	Gyr(s) = ---- = -------------------
+			R(s)	 1 + (Gc1 + Gc2) Gp
+		
+			Y(s)		    Gp
+	Gyd(s) = ---- = --------------------
+			D(s)	 1 + (Gc1 + Gc2) Gp
+	
+			Y(s)		  (Gc1 + Gc2) Gp
+	Gyn(s) = ---- = -  ---------------------
+			N(s)	    1 + (Gc1 + Gc2) Gp				 
+		 
+		 
+closed loop characteristics and feedback characteristics can be adjusted independently
+
+
+=== 8-7 ZERO-PLACEMENT APPROACH TO IMPROVE RESPONSE CHARACTERISTICS ====
+		 
+		 
+	No steady-state error for ramp and acceleration
+	response to step disturbance goes to zero
+	
+Assume:
+			  A(s)
+	Gp(s) = K ----             -> minimal phase
+			  B(s)
+			  
+		A(s) = (s + z1)(s + z2)...(s + zm)
+		B(s) = s^N (s + p_N+1)(s + p_N+2)...(s + p_n)
+		
+	
+			  a1 s + b1 + c1 s^2    1
+	Gc1(s) = -------------------- -----    -> PID Controller + filter
+					  s			   A(s)
+		
+		
+    		  a2 s + b2 + c2 s^2    1
+    Gc2(s) = -------------------- -----     -> PID, PI, PD, I, D, P
+    				  s			   A(s)
+    	
+				  a s + b + c s^2    1
+    Gc1 + Gc2  = ----------------- -----  
+						s		   A(s)
+		
+		
+    		  
+Consider the system:
+    				
+			Y(s)		   Gc1 Gp								p(s)
+	Gyr(s) = ---- = ------------------- = ---------------------------------------------
+			R(s)	 1 + (Gc1 + Gc2) Gp	   s^(n+1) + an s^n + ... + a2 s^2 + a1 s + a0
+
+
+	ZERO-PLACEMENT
+	
+		p(s) = a2 s^2 + a1 s + a0 = a2 (s + s1)(s + s2)
+		
+		p(s) is equal to the sum of the last three terms of denominator
+		
+		then the system will exhibit NO stedy-state error to step, ramp and acceleration inputs
+	
+	
+Requirement Placed on System Response Characteristics
+
+
+					 Gc1 s K A(s)
+	Gyr(s) = ------------------------------
+			  s B(s) + (a s + b + c s^2) K
+	
+	
+					K (a1 s + b1 + c1 s^2)
+		   = --------------------------------------------
+			 s^(n+1) + an s^n + ... + a2 s^2 + a1 s + a0
+	
+	
+	
+	
+	Define Gc1
+		=> K a1 = a1; K b1 = a0; K c1 = a2 
+	
+	
+	Define Gc2
+		=> Characteristic Equation: 1 + (Gc1 + Gc2) Gp
+		From performance requirements, define Gc2
+		
+			  (Ka - a1)s + (Kb - a0) + (Kc - a2)s^2		1
+		Gc2 = --------------------------------------  -----
+								Ks					   A(s)
+	
+	
+Design Step 1:
+	Design for step disturbance D(s)
+	
+	Define "areas" for characteristic equation	
+
+	From requirements define possible pole areas, so that the response satisfy criteria
+	From poles position define characteristic equation
+	From characteristic equation define Gc(s), using eq Y(s)/D(s) =  Gp/(1 +GcGp)
+	
+	
+Design Step 2: 
+
+	Determine Gc1 from 
+	
+			Y(s)		   Gc1 Gp
+	Gyr(s) = ---- = -------------------
+			R(s)	 1 + (Gc1 + Gc2) Gp
+			
+			
+	Numerator: Equal to last three denominator terms 
+			
+			
+	Then determine Gc2 from Gc = Gc1 + Gc2		
+	
++++++++++++++++++ 
+Bookmark: pg. 614
++++++++++++++++++
+
+
+567 - 647
+
+567  575  583  591  599  607  615  623  631  639  647
+00---10---20---30---40---50---60---70---80---90---100
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+Exs 1 - 13

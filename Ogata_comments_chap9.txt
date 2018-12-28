@@ -1,0 +1,605 @@
+
+======================================================================================
+
+	C H A P T E R   9  - Control Systems Analysis in State Space
+
+======================================================================================
+
+
+=== 9-1 INTRODUCTION ====
+
+System equations in terms of n first-order differential equations
+
+
+=== 9–2 STATE-SPACE REPRESENTATIONS OF TRANSFER-FUNCTION SYSTEMS ===
+
+State-Space Representation
+
+Canonical Forms:
+	Controllable
+	Observable
+	Diagonal 
+	Jordan
+	 
+
+
+Canonical Form
+	
+	Y(s)    b0s^n + b1s^(n-1) + ... + bn-1s + bn 
+	---- = --------------------------------------
+	U(s)      s^n + a1s^(n-1) + ... + an-1s + an
+
+
+Controllable Canonical Form:
+	
+	|dx1	|		| 0			1		0		...		0	|	|x1	  |		|0   |
+	|dx2	|		| 0			0		1		...		0	|	|x2	  |		|0   |
+	|...	|	=	| 							...			| .	|...  | +  	|... |. u
+	|dxn-1	|		| 0			0		0				1	|	|xn-1 |		|0   |
+	|dxn	|		| -an		-an-1 	-an-2	...		-a1 |	|xn	  |		|1   |
+			
+	y = | bn - anb0 	bn-1 - an-1b0	... 	b1 - a1b0  |. |x1   |	+ b0 u
+                                                              |x2   |	
+															  |...  | 
+															  |xn-1 |	
+															  |xn   |	
+
+
+	Important for pole-placement 
+	
+	
+	
+Observable Canonical Form	
+
+															  
+	|dx1	|		| 0		0	...		0	-an   |		|x1	  |		|bn - anb0       |
+	|dx2	|		| 1		0	...		0	-an-1 |		|x2	  |		|bn-1 - an-1b0   |
+	|...	|	=	| 			...			...	  | .	|...  | +  	|...             |. u
+	|dxn	|		| 0		0	...		1 	-a1	  |		|xn	  |		|b1 - a1b0       |
+			
+	y = | 0	0	...	0	1  |. |x1   |	+ b0 u
+                              |x2   |	
+							  |...  | 
+							  |xn-1 |	
+							  |xn   |
+
+	A matrix is the tranpose of Controllable Canonical Form
+	
+	
+Diagonal Canonical Form
+
+	Partial Fraction Expansion
+
+	Y(s)          c1       c2              cn
+	---- = b0 + ------ + ------ + .... + ------   
+	U(s)        s + p1   s + p2          s + pn
+	
+	
+	|dx1	|		| -p1		...		0 	 |		|x1	  |		| 1   |
+	|dx2	|		| 		-p2	...		     |		|x2	  |		| 1   |
+	|...	|	=	| 			...		     | .	|...  | +  	| ... |. u
+	|dxn	|		| 0			...		-pn  |		|xn	  |		| 1   |
+			
+	y = | c1	c2	....	cn |. |x1   |	+ b0 u
+								  |x2   |	
+								  |...  | 
+								  |xn   |
+	
+	Equations are uncoupled
+	
+Jordan Canonical Form	
+	
+	Multiple Roots. Diagonal Form is modified to Joradan
+	
+	Partial Fraction Expansion
+
+		Ex: p1 = p2 = p3
+	
+	Y(s)          c1           c2           c3        c4              cn	
+	---- = b0 + ------     + ------     + ------ +  ------ + .... + ------   	
+	U(s)        (s + p1)^3   (s + p1)^2   s + p1    s + p4          s + pn	
+	
+	
+	|dx1	|		| -p1	1		0		...		 	 |		|x1	  |		| 0   |
+	|dx2	|		|  0	-p1	    1		...		0    |		|x2	  |		| 0   |
+	|dx3	|		|  0		  -p1	                 |      |x3   |     | 1   |
+	|dx4	|		|					-p4			0    |		|x4	  |		| 1	  |
+	|...	|	=	| 		0				...		     | .	|...  | +  	| ... |. u
+	|dxn	|		| 					 0	...		-pn  |		|xn	  |		| 1   |
+			
+	y = | c1	c2	....	cn |. |x1   |	+ b0 u
+								  |x2   |	
+								  |...  | 
+								  |xn   |
+	
+	
+The Eigenvalues of an n x n Matrix A
+
+		| lamda I - A | = 0
+
+Diagonalization of n x n Matrix
+
+	Transform x = Pz
+	
+	    | 1			1		....	1        | 
+	    | l1		l2 		.... 	ln       |
+	P = | l1^2 		l2^2 	....	ln^2     |		l1, l2, ... ,ln = n distinc eigenvalues of A
+		|                                    |
+		| l1^(n-1)	l2^(n-1) ... 	ln^(n-1) |
+		
+		
+	           | l1 			0   |
+	           |		l2          |
+	P^-1 A P = |		            |
+		       |	                |
+		       | 0	 			ln  |
+			   
+			   
+	if matrix A has multiple eigenvalues: l1, l1, l3
+
+
+		| 1		0	1    |
+	S = | l1	1	l3   |
+		| l1^2  2l1 l3^2 |
+		
+	
+			 | l1 	1	0  |
+	S^-1AS = | 0 	l1	0  |
+			 | 0 	0	l3 |
+		
+		Jordan Canonical Form
+		
+
+Invariance of Eigenvalues
+
+	characterict equations of A and P^-1AP are identical
+	
+	|lambdaI - P^-1AP| = |lambdaI -A|
+	
+	
+	
+Nonuniqueness of a Set of State Variables
+		
+	P must be nonsingular
+	
+	
+=== 9–3 TRANSFORMATION OF SYSTEM MODELS WITH MATLAB ===
+	
+	
+	[A, B, C, D] = tf2ss(num,den)
+	
+	[num,den] = ss2tf(A,B,C,D,iu)
+	
+
+	
+=== 9–4 SOLVING THE TIME-INVARIANT STATE EQUATION ===
+
+
+Solution of Homogeneous State Equations
+
+
+	dx = Ax
+	
+	x(t) = ( 1 + At + 1/2! A^2 t^2 + ... + 1/k! A^k t^k + ...) x(0)
+		
+		= e^(At) x(0)
+	
+
+	
+	Matrix Exponential
+	
+		
+					inf		A^k t^k
+		e^(At) = Somatório  --------
+					k=0		   k!
+		
+		
+		differentiation:
+		
+			d/dt e^(At) = e^(At) A
+	
+	
+		properties:
+
+		
+			e^(At) e^(As) = e^(A(t+s))
+			
+			if s = -t
+				
+				e^(At) e^(-At) = e^(A(t-t)) = I
+				
+		inverse
+		
+			e^(-At)
+			
+			if AB = BA
+				
+				e^((A+B)t) = e^(At) e^(Bt)
+		
+		
+	Laplace Transform Approach to the Solution of Homogeneous State Equations
+
+		dx = Ax
+		
+		sX(s) - x(0) = A X(s)
+		
+		X(s) = (sI-A)^-1 x(0)
+		
+			(sI - A)^-1 = I/s + A/s^2 + A^2/s^3 + ....
+	
+		
+		x(t) = L^-1 [(sI-A)^-1] x(0)
+		
+			 = e^(At) x(0)
+			 
+			 
+	State-Transition Matrix
+	
+		dx = A x
+		
+		x(t) = Phi(t) x(0)
+		
+		dPhi(t) = A Phi(t)
+		
+		
+		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+		Phi(t) = e ^(At) = L^-1[(sI - A)^-1]
+		
+		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!		
+		
+		IF A is DIAGONAL
+		
+			l1, l2, ..., ln are the eingenvalues of A
+			
+			
+					 |  e^(l1 t)				   		0		|
+					 |			e^(l2 t)                        |
+			Phi(t) = | 						....                |
+					 |	0							e^(ln t)    |
+					
+				 
+			if are multiple aigenvalues: then will contain e^(l1 t), t e^(l1 t), t^2 e^(l1 t)...
+
+
+	Properties of State-Transition Matrices
+	
+		1. Phi(0) = e^(A 0) = I
+		
+		2. Phi(t) = e^(-At)^-1 = Phi(-t)^-1 or Phi^-1(t) = Phi(-t)
+		
+		3. Phi(t1+t2) = Phi(t1) Phi(t2) = Phi(t2) Phi(t1)
+		
+		4. [Phi(t)]^n = Phi(nt)
+
+		5. Phi(t2-t1) Phi(t1-t0) = Phi(t2-t0)
+		
+		
+		
+Solution to Nonhomogeneous State Equations
+	
+	
+	dx = ax + bu
+	
+	x(t) = e^(at) x(0) + e^(at) int[e^(-a tau) b u(tau) dtau]
+	
+						  t
+	x(t) = Phi(t) x(0) + int[Phi(t-tau) B u(tau) dtau]
+						  0
+	
+	* Phi(t) = e^(At)
+	
+	*x(t) is the sum of initial condition transition term and term from input vector 
+		
+	
+	Laplace Transform Approach
+	
+		dx = Ax + Bu
+		
+		sX(s) = AX(s) + BU(s)
+		
+		X(s) = (sI - A)^-1 x(0) + (sI - A)^-1 BU(s)
+		
+		
+		* L^1[(sI - A)^-1] = e^(At) = Phi(t)
+		
+		
+Solution in terms of x(t0) => inicial time different of zero
+		
+									  t
+	x(t) = e^(A(t-t0)) x(0) + e^(at) int[e^(-a tau) b u(tau) dtau]
+									  t0
+		
+		
+		
+===  	9–5 SOME USEFUL RESULTS IN VECTOR-MATRIX ANALYSIS	===
+
+
+Cayley-Hamilton Theorem
+
+	Consider an n x n A matrix, which characteristic equation is
+	
+	|lambda I - A| = l^n + a1 l^(n-1) + ... an-1 l + an = 0
+
+	So
+	
+	A^n + a1 A^(n-1) + ... + an-1 A + an I = 0
+	
+	
+Minimal Polynomial
+	
+	The minimal polynomial of an n*n matrix A is defined as the polynomial of least degree,
+
+		phi(l) =  l^m + a1 l^(m-1) + a2 l^(m-2) + .... + am-1 l + am    (m <= n)
+		
+		phi(A) = 0
+
+	Suppose that d(l), a polynomial in l, is the greatest common divisor of all the
+		elements of adj(lI - A)
+	
+				 |lI - A|
+		phi(l) = ----------
+				    d(l)
+					
+	Procedure to determine phi(l)
+
+		1. Form adj(lI - A), as polynomial in l
+		
+		2. Determine d(l) as the greatest common divisor of ALL elements of adj(lI - A)
+			Make the highest-degree term in d(l) to have coefficient 1 
+					
+					
+		
+Computation of e^(AT)
+
+	Method I - Diagonal matrix
+	
+		
+		e^AT = P e^Dt P^-1
+		
+		
+		        |  e^(l1 t)				   		0			|
+		e^DT =  |			e^(l2 t)                        |
+		        | 						....                |
+	            |	0							e^(ln t)    |
+				
+				
+				
+		if A has multiple roots, use Jordan Canonical Form
+		
+		
+		
+	Method 2 - Inverse Laplace Transformation
+	
+		e^AT = L^-1{(sI - A)^-1}
+		
+		
+
+		
+	Method 3 - Sylvester's Interpolation Method	
+		
+		Minimal Polynomial with DISTINCT ROOTS
+		
+			m = degree of minimal Polynomial of A
+			m = n
+			
+			e^At can be obtained resolving:
+			
+				|  1  l1   l1^2    ...    l1^(m-1)     e^(l1t) |
+				|  1  l2   l2^2    ...    l2^(m-1)     e^(l2t) |
+				|                  ...                         |  = 0 
+				|  1  lm   lm^2    ...    lm^(m-1)     e^(lmt) | 
+				|  1  A     A^2    ...     A^(m-1)     e^(At)  |
+				
+				
+			e^At = a0(t)I + a1(t)A + a2(t)A^2+ ... + am-1(t)A^(m-1)
+				
+				
+		Minimal Polynomial with MULTIPLE ROOTS
+
+			m < n
+			
+			see eq. 9-49 / 9-50
+			
+			e^At = sum^(n-1)_(k=0) ak(t)A^k
+
+		
+
+Linear Independet vectors
+
+	x1, x2, ..., xn are linearly independent if
+	
+		c1 x1 + c2 x2 + .... + cn xn = 0
+		
+		implies that:  c1 = c2 = ... = cn = 0
+		
+		
+	A matrix is SINGULAR if columns or row are linearly dependent
+		Rank(A) < n
+
+		
+
+======= 9-6 CONTROLLABILITY ==========
+
+The system: 
+	dx = Ax + Bu
+	
+	is said to be controllable if its possible to have an unconstrained control signal (u),
+	that will change an inital state to a desired final state in a finite time t <= tf
+
+the system is completely state controllable if
+
+
+	[B 	AB 	A^2B  ...  A^(n-1)B]   => 	controllability matrix,  n x n matrix
+
+must be linearly independent (RANK n)
+
+
+
+Alternate Form
+
+	Diagonalize A matrix (distinct eigenvectors)
+	
+		P^-1 A P = D = diag(l1, l2, l3, ..., ln)
+	
+		x = Pz
+	
+		dz = P^-1 A P + P^-1 B u
+	
+		dz1 = l1 + f11 u1 + f12 u2 ...
+		
+		
+		if any ROW of P^-1B are all zero, then the corresnponding state cannot be controlled
+		
+	If A has multiple eigenvectors - use Jordan canonical form
+		
+		The system is controllable if and only if:
+			
+		(1) no two Jordan blocks in J of Equation (9–60) are associated with the same eigenvalues
+		(2) the elements of any row of that correspond to the last row of each Jordan block are 
+			not all zero, and 
+		(3) the elements of each row of that correspond to distinct eigenvalues are not all zero.
+
+
+	
+State Controllability in s-plane	
+
+	It can be proved that a necessary and sufficient condition for complete state controllability:
+		No cancellation occur in the transfer function or transfer matrix.
+
+		
+Output Controllability
+	
+	The system is completely output controllable if:
+	
+	
+	[CB   CAB 	CA^2B  ...  CA^(n-1)B   D]  =>  m x (n+1)r matrix
+	
+	must be linearly independent (RANK m) 
+	
+	
+	*m is the number of outputs (y is a m-vector)
+	
+	
+Stabilizability
+	Partially Controllable System with:
+		(1) Uncontrollable modes are Stable
+		(2) Unstable modes are controllable
+	is said to be stabilizable.
+	
+	Such system can be made stable by use a suitable feedback control
+	
+	
+	
+======= 9-6 OBSERVABILITY ==========
+
+
+The system:
+
+	dx = Ax
+	y = Cx
+	
+is said to be completely observable if every state x(t0) can be determined from the observation 
+of y(t) over a finite time interval. That is, every transition of the state eventually affects 
+every element of the output vector
+
+Estimates of state variables are possible if and only if the system is completely observable.
+
+
+The system is completely observable if and only if:
+	
+	[C'   A'C' 	A^2 C'  ...  A'^(n-1) C']  =>  observability matrix (n x nm matrix)
+
+
+	must be linearly independent (RANK n) 
+	
+	*C' is conjugate transpose of C
+	
+Conditions for Complete Observability in the s-Plane
+	
+	The necessary and sufficient conditions for complete observability is that 
+		No cancellation occur in the transfer function or transfer matrix
+		
+		
+Alternative Form
+
+	dx = Ax
+	y = Cx
+	
+	Diagonalize A matrix (distinct eigenvectors)
+	
+		P^-1 A P = D = diag(l1, l2, l3, ..., ln)
+	
+		x = Pz
+	
+		dz = P^-1 A P = Dz    -> z(t) = e^(Dt)z(0)
+		y = CPz
+		
+		y(t) = CPe^(Dt)z(0)
+		
+		
+		y(t) = CP diag(e^(l1t), e^(l2t), ... , e^(lnt)) z(0)
+		
+		The system is completely observable if none of the COLUMNS of the m x n matrix CP
+			consists of all zero elements
+
+			
+	If A has multiple eigenvectors - use Jordan canonical form
+		
+		The system is completely observable if 
+			
+			(1) no two Jordan blocks in J are associated with the same eigenvalues, 
+			(2) no columns of CS that correspond to the first row of each Jordan block consist 
+				of zero elements, and 
+			(3) no columns of CS that correspond to distinct eigenvalues consist of zero elements.
+		
+		
+Principle of Duality
+
+	S1:
+		dx = Ax + Bu
+		y = Cx
+		
+		n-states
+		r-inputs
+		m-outputs
+		
+	S2:
+		dz = A'z + C'v
+		n = B'z
+		
+		n-states
+		m-inputs
+		r-outputs
+		
+		
+	S1 is completely state controllable if S2 is completely observable
+	S1 is completely observable if S2 is completely state controllable
+	
+	
+Detectability
+
+	For a partially observable system, if 
+		(1) the unobservable modes are stable and 
+		(2) the observable modes are unstable, 
+	the system is said to be detectable. 
+	
+	* concept of detectability is dual to the concept of stabilizability.
+	
+	
+
+	
+	
++++++++++++++++++                                           
+Bookmark: pg. 688
++++++++++++++++++                                           
+
+
+648 - 721
+
+648  655  663  670  678  685  693  700  708  715  723
+00---10---20---30---40---50---60---70---80---90---100
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+Exs 1 - 18

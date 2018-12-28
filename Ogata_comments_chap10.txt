@@ -1,0 +1,113 @@
+
+======================================================================================
+
+	C H A P T E R   1 0  - Control Systems Design in State Space
+
+======================================================================================
+
+
+=== 10-2 POLE PLACEMENT ====
+
+Assumption: all states are measurable and available for feedback (completely state controllable)
+
+
+Design by pole placement
+
+	Specifies all closed-loop poles
+	
+	System MUST be completely state controllable
+	
+	
+		dx = Ax + Bu
+		y = Cx + Du
+		u = -Kx
+		
+		A: n x n
+		B: n x r
+		C: m x n
+		K: r x n  -> state feedback gain matrix
+	
+	Control is defined by an instantaneous state -> state feedback
+	
+	Regulator system: reference = cte
+	
+		dx = (A-BK)x
+		
+		x(t) = e^[(A-BK)t] x(0)
+	
+		Regulator poles: eig(A-BK)
+		
+		
+Necessary and Sufficient Condition for Arbitrary Pole Placement
+	
+	System completely state controllable
+	
+	
+Determination of Matrix K Using Transformation
+
+	1) Check for CONTROLLABILITY
+	
+	2) Determine eigenvalues of A
+	
+		|sI - A| = s^n + a1 s^(n-1) + ... + an-1 s + an 
+		
+	3) Determine transformation matrix T to controllable canonical form
+	
+		T = M W
+		
+		M = [B 	AB 	A^2B  ...  A^(n-1)B]   => 	controllability matrix
+		
+		     | an-1  an-2  ...  a1  1  |
+		     | an-2  an-3  ...  1   0  |
+		W =  | ...               ...   |
+		     | a1      1   ...  0   0  |
+		     | 1       0   .... 0   0  |
+
+	   
+	4) Get desired characteric polynomial equation
+	
+		(s - m1)(s - m2)...(s - mn) = s^n + alpha1 s^(n-1) + ... + alpha n-1 s + bn 
+		
+	5)
+
+		K = [ alpha n - an   alpha n-1 - an-1   ...   alpha2 - a2   alpha1 - a1] T^-1  
+		
+
+		
+Determination of Matrix K Using Direct Substitution Method
+
+	For low order systems (n <= 3)
+	
+		| sI - A + BK | = (s - m1)(s - m2)(s - m3) 
+		
+	
+Determination of Matrix K Using Ackermann's Formula	
+
+	K = [ 0  0  ...  0  1 ][B  AB  ...  A^(n-1)B]^-1 Phi(A)
+	
+	Phi(A) at desired poles (p.ex. desired: s^2 + 11s +30 -> Phi(A) = A^2 + 11A + 30I )
+	
+	
+Regulator Systems and Control Systems
+
+	Regulator System: constant input
+	Control System:   time varying input
+		
+		
+		
+		
+		
+		
+	
++++++++++++++++++                                           
+Bookmark: pg. 732
++++++++++++++++++                                           
+
+
+722-858
+
+722	 736  749  763  776  790  803  817  830  844  857   
+00---10---20---30---40---50---60---70---80---90---100
+>
+
+Exs 1 - 17
